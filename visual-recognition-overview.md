@@ -2,7 +2,7 @@
 
 copyright:
   years: 2015, 2017
-lastupdated: "2017-04-13"
+lastupdated: "2017-06-07"
 
 ---
 
@@ -17,7 +17,7 @@ The {{site.data.keyword.visualrecognitionfull}} Dedicated service uses deep lear
 A set of built-in classes provides highly accurate results without training. You can train custom classifiers to create specialized classes.
 
 ## How to use the service
-{: notoc}
+{: #how-to-use}
 The following image shows the process of creating and using the classifier:
 ![Describes the flow of the {{site.data.keyword.visualrecognitionshort}} service, from preparing, training, and classifying images to viewing results](images/vr-process2.png)
 
@@ -35,6 +35,4 @@ The {{site.data.keyword.visualrecognitionshort}} Dedicated service can be used f
 
 ## Supported languages
 {: #supported-languages}
-The **Classify an image** method supports English (en), Spanish (es), Arabic (ar), and Japanese (ja) for default classes. Custom classifiers returned with this method support only English.
-
-All other methods support English only.
+The **Classify images** method supports English (en), Arabic (ar), Spanish (es), and Japanese (ja) for the output of default classes. Korean (ko) is supported in some environments.
