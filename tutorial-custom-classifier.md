@@ -2,7 +2,7 @@
 
 copyright:
   years: 2015, 2017
-lastupdated: "2017-04-13"
+lastupdated: "2017-03-31"
 
 ---
 
@@ -10,21 +10,19 @@ lastupdated: "2017-04-13"
 {:shortdesc: .shortdesc}
 {:screen: .screen}
 {:pre: .pre}
-{:tip: .tip}
 
 # Creating a custom classifier
 {: #custom-classifier}
-After you [get started](/docs/services/visual-recognition-dedicated/index.html) by classifying an image, you are ready to train and create a custom classifier. With a custom classifier, you can train the {{site.data.keyword.visualrecognitionshort}} Dedicated service to classify images to suit your business needs.
+After you classify an image, you are ready to train and create a custom classifier. With a custom classifier, you can train the {{site.data.keyword.visualrecognitionshort}} Dedicated service to classify images to suit your business needs.
 {: shortdesc}
 
 ## Step 1: Log in, create the service, and get your credentials
-If you created your free instance of the {{site.data.keyword.visualrecognitionshort}} Dedicated service in "Getting started", use those credentials for this tutorial. If you haven't created a service, go back and run through those steps in the beginning of [Getting started](/docs/services/visual-recognition-dedicated/index.html).
+If you created your free instance of the {{site.data.keyword.visualrecognitionshort}} Dedicated service in "Getting started", use those credentials for this tutorial. If you haven't created a service, go back and run through those steps in the beginning of [Getting started](index.html).
 
 ## Step 2: Creating a custom classifier
 The {{site.data.keyword.visualrecognitionshort}} Dedicated service can learn from example images you upload to create a new, multi-faceted classifier. Each example file is trained against the other files in that call, and positive examples are stored as classes. These classes are grouped to define a single classifier, but return their own scores.
 
-Negative example files are not stored as classes.
-{: tip}
+**Note**: Negative example files are not stored as classes.
 
 1.  Download the [beagle.zip ![External link icon](../../icons/launch-glyph.svg "External link icon")](https://watson-developer-cloud.github.io/doc-tutorial-downloads/visual-recognition/beagle.zip){:new_window}, [husky.zip ![External link icon](../../icons/launch-glyph.svg "External link icon")](https://watson-developer-cloud.github.io/doc-tutorial-downloads/visual-recognition/husky.zip){:new_window}, [golden-retriever.zip ![External link icon](../../icons/launch-glyph.svg "External link icon")](https://watson-developer-cloud.github.io/doc-tutorial-downloads/visual-recognition/golden-retriever.zip){:new_window}, and [cats.zip ![External link icon](../../icons/launch-glyph.svg "External link icon")](https://watson-developer-cloud.github.io/doc-tutorial-downloads/visual-recognition/cats.zip){:new_window} example training files.
 2.  Call the `POST /v3/classifiers` method with the following cURL command, which uploads the training data and creates the classifier "dogs":
@@ -41,7 +39,9 @@ Negative example files are not stored as classes.
 
 	The response includes a new classifier ID and status, for example:
 
-    ```
+	<p class="no-copy"></p>
+    
+    ```json
     {
       "classifier_id": "dogs_1941945966",
       "name": "dogs",
@@ -84,7 +84,9 @@ You can update an existing {{site.data.keyword.visualrecognitionshort}} Dedicate
 
 	The existing "dogs" classifier is replaced by the retrained one with the same `classifier_id`. The response lists the new set of classes and the current status. For example:
 
-    ```
+	<p class="no-copy"></p>
+    
+    ```json
     {
       "classifier_id": "dogs_1941945966",
       "name": "dogs",
@@ -119,7 +121,9 @@ When the new classifier completes training, you can call it to see how it perfor
 
 1.  Create a JSON file called `myparams.json` that includes the parameters for your call, such as the `classifier_id` of your new classifier, and the default classifier. A simple JSON file might look like the following:
 
-    ```
+	<p class="no-copy"></p>
+    
+    ```json
     {
     "classifier_ids": ["dogs_1941945966", "default"] 
     }
@@ -138,7 +142,9 @@ When the new classifier completes training, you can call it to see how it perfor
 
 	The response includes classifiers, their classes, and a score for each class. Scores range from 0-1, with a higher score indicating greater correlation. The `/v3/classify` calls omit low-scoring classes by default if high-scoring classes are identified. You can set a minimum score to display by specifying a floating point value for the `threshold` parameter in your call.
 
-    ```
+	<p class="no-copy"></p>
+    
+    ```json
     {
       "images": [
         {
@@ -198,7 +204,16 @@ curl -X DELETE -u "{username}:{password}" "https://gateway.watsonplatform.net/vi
 ```
 {: pre}
 
-## Attributions
-{: #attributions notoc}
+### Attributions
+{: #attributions}
 
 All images used on this page are from Flikr and used under [Creative Commons Attribution 2.0 license  ![External link icon](../../icons/launch-glyph.svg "External link icon")](http://creativecommons.org/licenses/by/2.0/deed.en){:new_window}. No changes were made to these images.
+
+# Related Links
+{: #rellinks notoc}
+
+## Tutorials and Samples
+{: #samples}
+
+* Learn more about how to [Use your own data to train a classifier](customizing.html).
+* Learn more about [Best practices for custom classifiers](https://www.ibm.com/blogs/bluemix/2016/10/watson-visual-recognition-training-best-practices/)
