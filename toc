@@ -7,8 +7,6 @@ Visual Recognition Dedicated
     {: .navgroup id="learn"}
     index.md
     visual-recognition-overview.md
-    tutorial-custom-classifier.md
-    [Best practices for custom classifiers](https://www.ibm.com/blogs/bluemix/2016/10/watson-visual-recognition-training-best-practices/)
 
     {: .topicgroup}
     Additional resources
@@ -18,7 +16,9 @@ Visual Recognition Dedicated
     {: .navgroup-end}
 
     {: .navgroup id="howto"}
+    tutorial-custom-classifier.md
     customizing.md
+    [Best practices for custom classifiers](https://www.ibm.com/blogs/bluemix/2016/10/watson-visual-recognition-training-best-practices/)
     {: .navgroup-end}
 
     {: .navgroup id="reference"}

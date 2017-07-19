@@ -8,11 +8,12 @@ lastupdated: "2017-04-19"
 
 {:new_window: target="_blank"}
 
-# Release Notes for Visual Recognition Dedicated
+# Release notes
+
 The following new features and changes to the service are available.
 
 ## 21 April 2017
-{: notoc}
+{: #2017-04-21}
 
 This is the General Availability release of the {{site.data.keyword.visualrecognitionshort}} Dedicated service.
 
