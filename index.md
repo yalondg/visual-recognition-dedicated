@@ -2,7 +2,7 @@
 
 copyright:
   years: 2015, 2017
-lastupdated: "2017-06-20"
+lastupdated: "2017-11-02"
 
 ---
 
@@ -31,7 +31,7 @@ The API uses HTTP basic authentication. If you already know your credentials for
 1.  Copy your credentials:
     1.  Click **Service Credentials**.
     1.  Copy the `username` and `password` that are associated with the instance.
-    **Note**: Service credentials (`username` and `password`) are different from your Bluemix account username and password.
+    **Note**: Service credentials (`username` and `password`) are different from your {{site.data.keyword.Bluemix_notm}} account username and password.
 
 ## Step 2: Classifying an image
 {: #classify}
