@@ -1,25 +1,32 @@
 ---
 
 copyright:
-  years: 2015, 2017
-lastupdated: "2017-06-20"
+  years: 2015, 2018
+lastupdated: "2018-04-09"
 
 ---
 
-{:new_window: target="_blank"}
 {:shortdesc: .shortdesc}
+{:new_window: target="_blank"}
 {:tip: .tip}
+{:pre: .pre}
+{:codeblock: .codeblock}
+{:screen: .screen}
+{:javascript: .ph data-hd-programlang='javascript'}
+{:java: .ph data-hd-programlang='java'}
+{:python: .ph data-hd-programlang='python'}
+{:swift: .ph data-hd-programlang='swift'}
 
 # Guidelines for training classifiers
 {: #classifier}
 
-After you classify an image and create, train, and query a custom classifier with the example data in [Creating a custom classifier](/docs/visual-recognition-dedicated/tutorial-custom-classifier.html), you'll want to classify your own data or create your own custom classifier.
+After you classify an image and create, train, and query a custom classifier with the example data in the [Creating a custom classifier tutorial](/docs/services/visual-recognition-dedicated/tutorial-custom-classifier.html), you can classify your own data or create your own custom classifier.
 {: shortdesc}
 
-## Default classifier categories
+## General classifier categories
 {: #default-classifiers}
 
-The default classifier returns classes from thousands of possible tags organized into categories and subcategories. The following list shows the top-level categories:
+The General classifier returns classes from thousands of possible tags organized into categories and subcategories. The following list shows the top-level categories:
 
 - Animals (including birds, reptiles, amphibians, etc.)
 - Person and people-oriented information and activities
@@ -40,23 +47,22 @@ The `/v3/classify` method classifies images within a hierarchy of related classe
 
 A custom classifier is a group of classes that are trained against each other. This allows you to create a multi-faceted classifier that can identify highly specialized subjects, while also providing a score for each individual class.
 
-During classifier training, classes are created when you upload separate compressed (.zip) files of positive examples for each class. For example, to create a classifier called "fruit", you might upload a .zip file of images of pears, a .zip file of images of apples, and a .zip file of images of bananas in a single training call.
+During training, classes are created when you upload separate compressed (.zip) files of positive examples for each class. For example, to create a classifier called "fruit", you might upload a .zip file of images of pears, a .zip file of images of apples, and a .zip file of images of bananas in a single training call.
 
 You can also provide a .zip file of negative examples in the same training call to further hone your classifier. Negative example files are not used to create a class. For the custom classifier "fruit", you might provide a .zip file with images of various vegetables.
 
-![Fruit classifier with positive and negative examples](images/classifier.png)
+![Fruits classifier with positive and negative examples](images/classifier.png)
 
 After training completes, when the service identifies fruit in an image, it will return the classifier "fruit" as an array containing the classes "pears", "apples", and "bananas" with their respective confidence scores.
 
-The `POST /v3/classifiers` training call requires that you provide at least two example .zip files: two positive examples files, or one positive examples file and one negative examples file.
-{: tip}
+**Important:** The **Create a classifier** call requires that you provide at least two example .zip files: two positive examples files or one positive and one negative file.
 
-Custom classifiers are only accessible to the specific service instance where they were created and cannot be shared with other {{site.data.keyword.Bluemix_notm}} users who do not have access to your instance of the service.
+Custom classifiers are accessible only to the specific service instance where they were created and cannot be shared with other {{site.data.keyword.Bluemix_notm}} users who do not have access to your instance of the service.
 
 ## Updating custom classifiers
 {: #update-classifier}
 
-You can update an existing classifier by adding new classes, or by adding new images to existing classes. To update the existing classifier, use several compressed (.zip) files, including files containing positive or negative images (.jpg, or .png). You must supply at least one compressed file, with additional positive or negative examples.
+You can update an existing classifier by adding new classes or by adding new images to existing classes. To update the existing classifier, use several compressed (.zip) files, including files containing positive or negative images (.jpg, or .png). You must supply at least one compressed file, with additional positive or negative examples.
 
 Compressed files containing positive examples are used to create and update "classes" to impact all of the classes in that classifier. The prefix that you specify for each positive example parameter is used as the class name within the new classifier. The "\_positive\_examples" suffix is required. There is no limit on the number of positive example files you can upload in a single call.
 
@@ -85,46 +91,62 @@ There are size limitations for training calls and data:
 - The service accepts a maximum of 10,000 images or 100 MB per .zip file
 - The service requires a minimum of 10 images per .zip file.
 - The service accepts a maximum of 256 MB per training call.
-- Minimum recommend size of an image is 32X32 pixels.
+- Minimum recommended size of an image is 32X32 pixels.
 
-There are also size limitations for classification calls:
+There are also size limitations when classifying images:
 
-- The `POST /v3/classify` methods accept a maximum of 20 images per batch.
-- The `POST /v3/detect_faces` methods accept a maximum of 15 images per batch.
+- Limitations for the methods to classify images:
+    - Maximum image size is 10 MB.
+    - Maximum .zip file size is 100 MB with up to 20 images.
+
+<!-- - The `POST /v3/recognize_text` method accept a maximum of 10 images per batch. -->
 
 ## Guidelines for good training
 {: #good-training}
 
 The following guidelines are not enforced by the API. However, the service tends to perform better when the training data adheres to them:
 
-- A minimum of 50 images is recommended in each .zip file, as fewer than 50 images can decrease the quality of the trained classifier.
-- If the quality and content of training data is the same, then classifiers that are trained on more images will generally be more accurate than classifiers that are trained on fewer images. The benefits of training a classifier on more images plateaus at around 5000 images, and this can take a while to process. You can train a classifier on more than 5000 images, but it may not significantly increase that classifier's accuracy.
-- Uploading a total of 150-200 images per .zip file gives you the best balance between the time it takes to train and the improvement to classifier accuracy. More than 200 images increases the time, and it does increase the accuracy, but with diminishing returns for the amount of time it takes.
-- Include approximately the same number of images in each examples file. Including an unequal number of images can cause the quality of the trained classifier to decline.
-- The accuracy of your custom classifier can be affected by the kinds of images you provide to train it. Provide example images that are similar to the images you plan to analyze. For example, if you are training the classifier "tiger", your classifier might be less accurate if you provide only images of tigers in a zoo taken by a mobile phone to train the classifier, but you want to test the classifier on images of tigers in the wild taken by professional photographers.
+- Make sure that your images are at least 224 x 224 pixels.
+- For .png images, make sure that the pixel depth is set to at least 24 bits per pixel:
+    - To check the depth on MacOS, run the `file` command. 24-bit depth is displayed as `8-bit/color`.
+    - To check on Windows, right-click the file and choose **Properties** > **Details**. Look for **Bit depth**.
+- Include at least 50 positive images per class before you assess your training results.
+    - Assuming similar quality and content for your training data, more training images generally provide more accurate results than fewer images.
+    - 150 - 200 images per .zip file provides the best balance between processing time and accuracy. More than 200 images increases the time and the accuracy, but with diminishing returns for the amount of time it takes.
+    - The benefits of training a classifier on more images plateaus at around 5000 images. Although you can train on more than 5000 images, that number might not significantly increase accuracy, and increases processing time.
+- Include a negative class to help improve your results.
+    - Include approximately the same number of negative images as positive ones. An unequal number of images might reduce the quality of the trained classifier.
+- Make sure that the backgrounds in your training images are comparable to what you expect to classify. The accuracy of your classifier can be affected by the kinds of images you provide to train it.
+    - For example, if you are training the "tiger" classifier, your classifier might be less accurate if you train only on images of tigers in a zoo that are taken by a mobile phone but analyze images taken in the wild taken by professional photographers.
+- Make sure that the subject matter of the classifier is at least 1/3 of the image's overall size.
+
+For more information about training, see [Best practices for custom classifiers ![External link icon](../../icons/launch-glyph.svg "External link icon")](https://www.ibm.com/blogs/bluemix/2016/10/watson-visual-recognition-training-best-practices/){: new_window}.
 
 ## Guidelines for high volume classifying
 {: #high-volume}
 
-If you want to classify many images, submitting one image at a time can take a long time. You can maximize efficiency and performance of the service in the following ways:
+Maximize efficiency and performance of the service in the following ways when you submit many images:
 
-- Resize images to be no larger than 320 pixels in either width or height. Images do not need to be high resolution.
-- Submit images in batches as compressed (.zip) files.
-- Specify only the classifiers you want results for in the `classifier_ids` parameter. If you do not specify a value for this parameter, the service classifies the images against the default classifier and takes longer to return a response.
+- Crop or resize your images to 224 x 224 pixels. The service is currently optimized for this size although it might change.
+    - Crop the image if it has an aspect ratio greater than 2:1 or under 1:2.
+    - Consider cropping the image into multiple square images, or include only the center of the image, depending on what is most important to your use.
+- Submit up to 20 images in a single .zip file. You don't need to use any compression because JPEG and PNG images are compressed files.
+- Use the **classifier_ids** parameter to specify only the classifiers that you want to use.
+- Although the service reads EXIF tags and rotates images, for the best throughput, send images that don't need to be rotated by the service (the EXIF **Orientation** tag is set to `1`).
 
 ## Custom classifier scores
 {: #scores}
 
-The `/classify` method produces a score between 0.0 and 1.0 for each image for each class. This section delves into the meaning of those scores for custom classifiers (as opposed to the default classifier).
+The `/classify` method produces a score between 0.0 and 1.0 for each image for each class. This section delves into the meaning of those scores for custom classifiers (as opposed to the General classifier).
 
 ### Background reading
 
-- The service performs [statistical classification ![External link icon](../../icons/launch-glyph.svg "External link icon")](https://en.wikipedia.org/wiki/Statistical_classification){:new_window}.
-- You can [measure statistical classifiers ![External link icon](../../icons/launch-glyph.svg "External link icon")](https://en.wikipedia.org/wiki/Category:Information_retrieval_evaluation){:new_window} in several ways.
+- The service performs [statistical classification. ![External link icon](../../icons/launch-glyph.svg "External link icon")](https://en.wikipedia.org/wiki/Statistical_classification){: new_window}
+- You can [measure statistical classifiers ![External link icon](../../icons/launch-glyph.svg "External link icon")](https://en.wikipedia.org/wiki/Category:Information_retrieval_evaluation){: new_window} in several ways.
 
 ### How to use the scores
 
-- Think about possible actions to be taken in response to a classification. Specifically, analyze how you will use "true" or "false" positive or negative conditions.  These conditions are described in the Background Reading.
+- Think about possible actions to be taken in response to a classification. Specifically, analyze how you will use "true" or "false" positive or negative conditions. These conditions are described in the Background Reading.
 - This cost-benefit balance is crucial to deciding what to do with each class score, and only someone who understands the final application can determine it. The score value needed for the application to take some action is called the "decision threshold." The service does not compute this for you.
 - Custom classifiers use binary "one versus the rest" models to train each class against the other classes. The system assumes that two classes within a classifier cannot occur at the same time, so you should create separate classifiers to test for classes that can exist together, like `blue` and `sky`. Alternatively, you could create a distinct classifier for cases where both classes exist at the same time and test for a class like `blueSky`.
 
@@ -134,32 +156,32 @@ Imagine that you are monitoring an assigned parking space with a webcam. You tra
 
 The first action to consider is whether to send a notification.
 
-Suppose you park in your spot and have the service start classifying the images. You see the `myCar` score computed as 0.8 on average over a few hours, while the `unknownCar` score hovers around 0.3, `emptySpot` is around 0.15 and `blockedCamera` is around 0.1. Given this data, you write your code to notify you if the `myCar` score is less than 0.75, or if one of the others is greater than 0.6. During the day, you get about one false alarm every three hours when people walk by and obscure the car. The system sends you the photo along with the notice, so you can see it's nothing to worry about. That seems fine, but then at night those false alarms every three hours get very annoying! Your preferences for day vs. night notification reflect the higher cost of a false alarm at night time for your application.
+Suppose you park in your spot and have the service start classifying the images. You see the `myCar` score computed as 0.8 on average over a few hours, while the `unknownCar` score hovers around 0.3, `emptySpot` is around 0.15 and `blockedCamera` is around 0.1. Given this data, you write your code to notify you if the `myCar` score is less than 0.75, or if one of the others is greater than 0.6. During the day, you get about one false alarm every three hours when people walk by and obscure the car. The system sends you the photo along with the notice, so you can see it's nothing to worry about. That seems fine, but then at night those false alarms every three hours get very annoying! Your preferences for day versus night notification reflect the higher cost of a false alarm at night time for your application.
 
 So, the notification logic and threshold will probably vary, depending on the perceived risk of car theft, the accuracy of your classifiers, and the amount of annoyance caused by a false alarm.
 
 Similarly, as a person, you may face the same trade-off. If the system notifies you that the camera has been blocked, the accompanying image will likely simply be all black or gray. Do you go to check on the car in person or ignore it? Again, this depends on your other priorities and the perceived risks.
 
-### Questions about scores
+### Questions
 {: #questions-custom-class}
 
-**What do the scores mean?**
+- **What do the scores mean?**
 
-- The scores are comparable indicators, with a range from 0.0 to 1.0. You can compare the scores of two custom classes (from the same or different classifiers) on the same or different images, and the higher one should be more likely to appear in the image than the lower one. However, they may both be present. It is best to pick a decision threshold for each class individually.
-- The custom classifier scores are not comparable to the scores returned by the default classifier (which has `classifier_id: "default"`)
-- The service attempts to normalize the score output so that 0.5 is a good decision threshold. By default, scores below 0.5 are not reported in the results of `/classify`. You can override this behavior by setting the threshold parameter of the `/classify` method. This normalization is only computed on the training data, so with new data or different application contexts, you might find that a different threshold works better.
-- The scores are unitless and are neither percentages nor probabilities. (They do not add up to 100% or 1.0).
+    - The scores are comparable indicators, with a range from 0.0 to 1.0. You can compare the scores of two custom classes (from the same or different classifiers) on the same or different images, and the higher one should be more likely to appear in the image than the lower one. However, they may both be present. It is best to pick a decision threshold for each class individually.
+    - The scores for custom classifiers are not comparable to the scores returned by the General classifier (which has `classifier_id: "default"`)
+    - The service attempts to normalize the score output so that 0.5 is a good decision threshold. By default, scores below 0.5 are not reported in the results of `/classify`. You can override this behavior by setting the threshold parameter of the `/classify` method. This normalization is only computed on the training data, so with new data or different application contexts, you might find that a different threshold works better.
+    - The scores are unitless and are neither percentages nor probabilities. (They do not add up to 100% or 1.0).
 
-**Why do I get scores between 0.5 and 0.6 for images that I would expect to return a high score, near 1.0?**
+- **Why do I get scores between 0.5 and 0.6 for images that I would expect to return a high score, near 1.0?**
 
-- You might get lower scores if there is a significant amount of similarity between your classes, so that in the feature space your examples are not in distinct clusters, and the scores reflect this closeness to the best boundary between positives and negatives that the system could learn.
+    You might get lower scores if there is a significant amount of similarity between your classes, so that in the feature space your examples are not in distinct clusters, and the scores reflect this closeness to the best boundary between positives and negatives that the system could learn.
 
-**How can I evaluate the accuracy of a custom classifier for my use case?**
+- **How can I evaluate the accuracy of a custom classifier for my use case?**
 
-There are many ways to evaluate accuracy. Here's one method:
+    You can do this in multiple ways, one of which is the following:
 
-1.  Assemble a set of labeled images "L" that was not used in training the classifier.
-1.  Split L into two sets, V and T - validation and testing.
-1.  Run V through your classifier and pick a score threshold "R" which optimizes the correctness metric you value, such as top-5 precision, across all of V.
-1.  From T, select a random subset "Q" and classify it using your classifier and "R". Compute the probability of a correct classification on Q. That's one experiment.
-1.  Repeat step 4 with a different subset Q from T, then compute the average % correct across all experiments.
+    1.  Assemble a set of labeled images "L" that was not used in training the classifier.
+    1.  Split L into two sets, V and T - validation and testing.
+    1.  Run V through your classifier and pick a score threshold "R" which optimizes the correctness metric you value, such as top-5 precision, across all of V.
+    1.  From T, select a random subset "Q" and classify it using your classifier and "R". Compute the probability of a correct classification on Q. That's one experiment.
+    1.  Repeat step 4 with a different subset Q from T, then compute the average % correct across all experiments.
