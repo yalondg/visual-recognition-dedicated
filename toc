@@ -27,6 +27,7 @@ Visual Recognition Dedicated
     {: .navgroup id="reference"}
     [API reference](https://console.ng.bluemix.net/apidocs/762-visual-recognition-dedicated)
     language-support.md
+    information-security.md
 
     [Watson GitHub repos](https://github.com/watson-developer-cloud/)
     {: .navgroup-end}
