@@ -42,7 +42,7 @@ The current version is `2016-05-20`.
 The following new features and changes to the service are available.
 
 ### 22 May 2018
-{: #22May2018}
+{: #22may2018}
 
 - **Information security**: The documentation includes some new details about data privacy. Read more in [Information security](information-security.html).
 
