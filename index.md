@@ -21,7 +21,7 @@ lastupdated: "2018-04-10"
 
 # Getting started tutorial
 
-This tutorial guides you through how to use some built-in classifiers in {{site.data.keyword.visualrecognitionfull}} Dedicated to classify an image.
+This tutorial guides you through how to use some built-in classifiers (also known as models) in {{site.data.keyword.visualrecognitionfull}} Dedicated to classify an image.
 {: shortdesc}
 
 ## Before you begin
