@@ -19,7 +19,7 @@ lastupdated: "2018-04-10"
 
 # Creating a custom model
 
-After you analyze an image in the "Getting started tutorial," you are ready to train and create a custom model. With a custom model, you can train the {{site.data.keyword.visualrecognitionshort}} Dedicated service to classify images to suit your business needs.
+After you analyze an image in the "Getting started tutorial," you are ready to train and create a custom model. With a custom model (also known as a custom classifier), you can train the {{site.data.keyword.visualrecognitionshort}} Dedicated service to classify images to suit your business needs.
 {: shortdesc}
 
 ## Step 1:  Copy your credentials
