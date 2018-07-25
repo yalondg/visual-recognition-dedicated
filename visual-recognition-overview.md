@@ -27,7 +27,7 @@ The {{site.data.keyword.visualrecognitionfull}} Dedicated service uses deep lear
 ##Available models
 {: #models}
 
-A set of built-in models provides highly accurate results without training:
+A set of built-in models (also known as classifiers) provides highly accurate results without training:
 
 - [**General** model](/docs/services/visual-recognition-dedicated/customizing.html#default-classifiers): Default classification from thousands of classes.
 - **Explicit** model (Beta): Whether an image is inappropriate for general use.
